@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -7,11 +8,11 @@ import Estadisticas from "./pages/Estadisticas";
 import Perfil from "./pages/Perfil";
 import "./App.css";
 
-function App() {
+function App(){
   return (
     <Router>
       <Navbar />
-      <main className="app-container">
+      <main style={{ paddingTop: "84px" }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/biblioteca" element={<BibliotecaJuegos />} />

@@ -1,29 +1,170 @@
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #1e1e2f;
-  color: white;
-  padding: 1rem 2rem;
+/* Navbar.css - estilos modernos y responsivos */
+.nav-header {
+  width: 100%;
+  background: linear-gradient(90deg, var(--azul-oscuro), var(--azul-principal));
+  color: var(--card);
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.12);
 }
 
-.logo {
-  font-size: 1.4rem;
-  font-weight: bold;
+.nav-inner{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.6rem 1rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
 }
 
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 1.5rem;
+/* Brand */
+.nav-brand {
+  display:flex;
+  align-items:center;
+  gap:0.75rem;
+  text-decoration:none;
+  color:var(--card);
+}
+.nav-logo {
+  font-size:1.5rem;
+  line-height:1;
+}
+.nav-title {
+  font-weight:700;
+  font-size:1.15rem;
+  letter-spacing:0.2px;
 }
 
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  transition: color 0.3s;
+/* Toggle (hamburger) */
+.nav-toggle {
+  display: none;
+  width:44px;
+  height:36px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+.nav-toggle:focus { outline: 2px solid rgba(255,255,255,0.15); border-radius:6px; }
+
+/* hamburger lines */
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+  content:"";
+  display:block;
+  width:22px;
+  height:2px;
+  background:var(--card);
+  border-radius:2px;
+  transition: transform .25s ease, opacity .25s ease;
+  margin: 0 auto;
+}
+.hamburger::before { transform: translateY(-7px); }
+.hamburger::after { transform: translateY(5px); }
+
+.nav-toggle.open .hamburger {
+  background: transparent;
+}
+.nav-toggle.open .hamburger::before {
+  transform: translateY(0) rotate(45deg);
+}
+.nav-toggle.open .hamburger::after {
+  transform: translateY(0) rotate(-45deg);
 }
 
-.nav-links a:hover {
-  color: #4cd137;
+/* Menu */
+.nav-menu {
+  display:flex;
+  align-items:center;
+  gap:1.25rem;
+}
+.nav-menu ul {
+  display:flex;
+  gap:1rem;
+  list-style:none;
+  margin:0;
+  padding:0;
+  align-items:center;
+}
+.nav-menu li { }
+.nav-link {
+  color: rgba(255,255,255,0.95);
+  text-decoration:none;
+  padding:0.5rem 0.6rem;
+  border-radius:8px;
+  transition: background .18s, color .18s, transform .12s;
+  font-weight:500;
+}
+.nav-link:hover {
+  background: rgba(255,255,255,0.06);
+  transform: translateY(-2px);
+}
+.nav-link.active {
+  background: rgba(255,255,255,0.12);
+  color: var(--card);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* Actions (buttons at right) */
+.nav-actions {
+  display:flex;
+  gap:0.5rem;
+  margin-left:0.75rem;
+  align-items:center;
+}
+.btn {
+  border: none;
+  border-radius:10px;
+  padding:0.45rem 0.9rem;
+  cursor:pointer;
+  font-weight:600;
+  font-size:0.95rem;
+}
+.btn-outline {
+  background: transparent;
+  color: var(--card);
+  border: 1px solid rgba(255,255,255,0.14);
+}
+.btn-outline:hover { background: rgba(255,255,255,0.06); }
+.btn-solid {
+  background: var(--accent);
+  color: #06202a;
+  box-shadow: 0 6px 18px rgba(0,188,212,0.18);
+}
+.btn-solid:hover { filter: brightness(.98); transform: translateY(-2px); }
+
+/* Responsive: mobile */
+@media (max-width: 880px) {
+  .nav-toggle { display:block; }
+  .nav-menu {
+    position: absolute;
+    right: 12px;
+    top: calc(100% + 10px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    backdrop-filter: blur(6px);
+    border-radius: 12px;
+    padding: 0.8rem;
+    flex-direction: column;
+    gap: 0.6rem;
+    min-width: 200px;
+    box-shadow: 0 8px 30px rgba(2,6,23,0.35);
+    transform-origin: top right;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(.96);
+    transition: all .18s ease;
+  }
+
+  .nav-menu.open {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+  }
+
+  .nav-menu ul { flex-direction: column; gap: 0.3rem; }
+  .nav-actions { flex-direction: column; width: 100%; }
+  .btn { width: 100%; }
 }

@@ -1,3 +1,15 @@
+:root{
+  --azul-principal: #2563eb;
+  --azul-oscuro: #1e3a8a;
+  --azul-claro: #3b82f6;
+  --fondo: #f4f6fb;
+  --card: #ffffff;
+  --texto: #0f172a;
+  --muted: #64748b;
+  --accent: #00bcd4;
+}
+
+
 .App {
   text-align: center;
 }
