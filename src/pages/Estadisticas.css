@@ -1,0 +1,27 @@
+.estadisticas-container {
+  text-align: center;
+  padding: 2rem;
+  background: var(--gris-fondo);
+  min-height: 100vh;
+}
+
+.estadisticas-card {
+  background: var(--blanco);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin: 1rem auto;
+  padding: 1.5rem;
+  width: 280px;
+  transition: 0.3s;
+}
+
+.estadisticas-card:hover {
+  transform: translateY(-5px);
+  border: 2px solid var(--azul-principal);
+}
+
+.numero {
+  color: var(--azul-principal);
+  font-size: 1.8rem;
+  font-weight: bold;
+}

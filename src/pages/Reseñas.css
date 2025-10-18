@@ -1,0 +1,42 @@
+.reseñas-container {
+  background: var(--gris-fondo);
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.reseña-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2rem auto;
+  width: 60%;
+}
+
+.reseña-form input,
+.reseña-form textarea {
+  padding: 0.8rem;
+  border: 2px solid var(--azul-claro);
+  border-radius: 8px;
+}
+
+.reseña-form button {
+  background: var(--azul-principal);
+  color: var(--blanco);
+  padding: 0.7rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.reseña-form button:hover {
+  background: var(--azul-claro);
+}
+
+.reseña-card {
+  background: var(--blanco);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}

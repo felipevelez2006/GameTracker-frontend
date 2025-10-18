@@ -1,0 +1,38 @@
+.perfil-container {
+  background: var(--gris-fondo);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.perfil-card {
+  background: var(--blanco);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 320px;
+}
+
+.perfil-avatar {
+  width: 100px;
+  border-radius: 50%;
+  border: 3px solid var(--azul-principal);
+  margin-bottom: 1rem;
+}
+
+.perfil-btn {
+  background: var(--azul-principal);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1.2rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.perfil-btn:hover {
+  background: var(--azul-claro);
+}
