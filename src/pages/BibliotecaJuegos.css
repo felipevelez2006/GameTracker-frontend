@@ -1,34 +1,143 @@
+/* ==== Contenedor principal ==== */
 .biblioteca-container {
-  padding: 20px;
-  max-width: 800px;
-  margin: auto;
-  color: #333;
-}
-
-.juego-form {
+  min-height: 100vh;
+  padding: 60px 20px;
+  background: linear-gradient(160deg, #0b0f19, #101625, #151b2f);
+  color: #e4e9ff;
+  font-family: "Poppins", sans-serif;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 30px;
+  align-items: center;
 }
 
-.juego-form input,
-.juego-form button {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+.biblioteca-container h2 {
+  font-size: 2.2rem;
+  color: #89b4ff;
+  margin-bottom: 40px;
+  text-shadow: 0 0 10px rgba(137, 180, 255, 0.4);
 }
 
-.juego-form button {
-  background-color: #4caf50;
+/* ==== Formulario ==== */
+.biblioteca-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 50px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 25px 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+}
+
+.biblioteca-form input[type="text"],
+.biblioteca-form input[type="number"] {
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f0f4ff;
+  border-radius: 10px;
+  outline: none;
+  font-size: 0.95rem;
+  transition: 0.25s ease;
+}
+
+.biblioteca-form input[type="text"]:focus,
+.biblioteca-form input[type="number"]:focus {
+  border-color: #7ba9ff;
+  box-shadow: 0 0 10px rgba(123, 169, 255, 0.3);
+}
+
+.biblioteca-form label {
+  color: #c3d4ff;
+  font-size: 0.9rem;
+}
+
+.biblioteca-form button {
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #3a6fff, #6d9dff);
+  border: none;
   color: white;
+  border-radius: 10px;
   cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: 0.25s ease;
+}
+
+.biblioteca-form button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(123, 169, 255, 0.5);
+}
+
+/* ==== Lista de juegos ==== */
+.biblioteca-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 25px;
+  width: 100%;
+  max-width: 1100px;
 }
 
 .juego-card {
-  border: 1px solid #ddd;
-  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.juego-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(135, 174, 255, 0.3);
+  border-color: rgba(135, 174, 255, 0.2);
+}
+
+.juego-card h3 {
   margin-bottom: 10px;
+  color: #9dc1ff;
+  font-size: 1.3rem;
+}
+
+.juego-card p {
+  margin: 5px 0;
+  color: #d5defa;
+  font-size: 0.95rem;
+}
+
+/* ==== Botón eliminar ==== */
+.btn-eliminar {
+  margin-top: 12px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #ff5555, #ff7b7b);
+  border: none;
+  color: #fff;
   border-radius: 8px;
-  background-color: #fafafa;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s ease;
+}
+
+.btn-eliminar:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px rgba(255, 120, 120, 0.4);
+}
+
+/* ==== Mensajes ==== */
+.sin-juegos {
+  color: #a0a9c9;
+  font-style: italic;
+  text-align: center;
+  margin-top: 40px;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #0b0f19; /* mismo color base que tu degradado */
+  color: #e4e9ff;
+  min-height: 100vh;
 }

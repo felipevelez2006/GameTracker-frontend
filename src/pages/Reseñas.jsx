@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getReseñas, crearReseña, eliminarReseña } from "../services/reseñasService";
+import { getResenas, crearResena, eliminarResena } from "../services/reseñasService";
 import "./Reseñas.css";
 
 export default function Reseñas() {
@@ -17,7 +17,7 @@ export default function Reseñas() {
 
   async function cargarReseñas() {
     try {
-      const data = await getReseñas();
+      const data = await getResenas();
       setReseñas(data);
     } catch (error) {
       console.error("Error al cargar reseñas:", error);
@@ -27,7 +27,7 @@ export default function Reseñas() {
   async function handleAdd(e) {
     e.preventDefault();
     try {
-      const reseñaCreada = await crearReseña(nuevaReseña);
+      const reseñaCreada = await crearResena(nuevaReseña);
       setReseñas([...reseñas, reseñaCreada]);
       setNuevaReseña({ juego: "", autor: "", texto: "", calificacion: 0 });
     } catch (error) {
@@ -37,7 +37,7 @@ export default function Reseñas() {
 
   async function handleDelete(id) {
     try {
-      await eliminarReseña(id);
+      await eliminarResena(id);
       setReseñas(reseñas.filter(r => r._id !== id));
     } catch (error) {
       console.error("Error al eliminar reseña:", error);
