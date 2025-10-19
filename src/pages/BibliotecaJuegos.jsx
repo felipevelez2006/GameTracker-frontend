@@ -178,7 +178,7 @@ export default function BibliotecaJuegos() {
           <p className="sin-juegos">Aún no tienes juegos en tu biblioteca.</p>
         ) : (
           juegos.map((j) => (
-            <article key={j._id} className="juego-card" role="article">
+            <article key={j._id} className="juego-card">
               <h3>{j.nombre}</h3>
               <p><strong>Género:</strong> {j.genero || "—"}</p>
               <p><strong>Plataforma:</strong> {j.plataforma || "—"}</p>

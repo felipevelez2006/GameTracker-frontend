@@ -1,105 +1,168 @@
+/* === Fondo general === */
 .reseñas-container {
-  padding: 40px;
-  max-width: 900px;
-  margin: auto;
+  background: linear-gradient(135deg, #030b25, #05113d);
+  min-height: 100vh;
+  color: white;
+  padding: 3rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* === Título === */
+.reseñas-container h2 {
   text-align: center;
-  color: #e8f0ff;
-  background: linear-gradient(180deg, #0a1a3d, #102b5c);
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 102, 255, 0.3);
+  color: #cde3ff;
+  font-size: 2rem;
+  margin-bottom: 2rem;
 }
 
-.reseñas-container h1 {
-  color: #4da3ff;
-  font-size: 2.2em;
-  margin-bottom: 20px;
-}
-
+/* === Formulario === */
 .reseña-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 30px;
+  gap: 0.8rem;
+  max-width: 700px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 132, 255, 0.2);
 }
 
+/* Campos de entrada y textarea */
 .reseña-form input,
-.reseña-form textarea {
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: #132b4c;
-  color: #e8f0ff;
-  font-size: 1em;
-  resize: none;
+.reseña-form textarea,
+.reseña-form select {
+  background-color: #0a1a3b;
+  color: white;
+  border: 1px solid #2a4b8d;
+  border-radius: 10px;
+  padding: 0.7rem;
+  font-size: 0.95rem;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
 }
 
+.reseña-form input:focus,
+.reseña-form textarea:focus,
+.reseña-form select:focus {
+  outline: none;
+  border-color: #3a8fff;
+  box-shadow: 0 0 8px #3a8fff50;
+}
+
+/* === Botón principal === */
 .reseña-form button {
-  background: #4da3ff;
-  border: none;
+  background-color: #3a8fff;
   color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem;
   font-weight: bold;
-  padding: 10px 20px;
-  border-radius: 8px;
   cursor: pointer;
-  transition: 0.2s ease-in-out;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .reseña-form button:hover {
-  background: #1e8fff;
-  transform: scale(1.03);
+  background-color: #5aa8ff;
+  transform: translateY(-2px);
 }
 
+/* === Lista de reseñas === */
 .reseñas-lista {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
 }
 
+/* === Tarjetas === */
 .reseña-card {
-  background: #15325a;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 0 15px rgba(0, 102, 255, 0.25);
-  text-align: left;
-  transition: transform 0.2s ease;
+  background-color: rgba(15, 30, 65, 0.9);
+  border: 1px solid #264d9e;
+  border-radius: 15px;
+  padding: 1.5rem;
+  width: 700px;
+  box-shadow: 0 0 15px rgba(0, 102, 255, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .reseña-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
+  box-shadow: 0 0 25px rgba(0, 132, 255, 0.25);
 }
 
+/* === Textos === */
 .reseña-card h3 {
-  color: #64b5ff;
-  margin-bottom: 8px;
+  color: #89b4ff;
+  margin-bottom: 0.5rem;
 }
 
-.autor {
-  font-size: 0.9em;
-  color: #bcd6ff;
-  margin-bottom: 10px;
+.reseña-card .author {
+  color: #cbd8f5;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
 }
 
-.texto {
-  font-style: italic;
-  margin-bottom: 10px;
-}
-
-.calificacion {
+.reseña-card .rating {
+  color: #ffd85f;
   font-weight: bold;
-  color: #f4f8ff;
+  margin-bottom: 0.6rem;
 }
 
-.btn-eliminar {
-  background: #ff4b4b;
+.reseña-card .content {
+  color: #e6edff;
+  line-height: 1.4;
+}
+
+/* === Botón de eliminar === */
+.reseña-card button {
+  margin-top: 0.8rem;
+  background-color: #ff4757;
   color: white;
   border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
   cursor: pointer;
-  transition: 0.2s;
+  font-weight: bold;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.btn-eliminar:hover {
-  background: #ff2a2a;
+.reseña-card button:hover {
+  background-color: #ff6b81;
+  transform: scale(1.05);
 }
+
+/* Estilo personalizado para el <select> */
+.reseña-form select {
+  appearance: none; /* quita la flechita nativa */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #0a1a3b;
+  color: white;
+  border: 1px solid #2a4b8d;
+  border-radius: 10px;
+  padding: 0.7rem 2.5rem 0.7rem 0.7rem; /* espacio para nuestra flecha */
+  font-size: 0.95rem;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='14' height='10' viewBox='0 0 14 10' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill='%23cde3ff' d='M7 10L0.0717968 0.25L13.9282 0.25L7 10Z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  background-size: 12px;
+  transition: border 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.reseña-form select:hover {
+  background-color: #102554;
+}
+
+.reseña-form select:focus {
+  outline: none;
+  border-color: #3a8fff;
+  box-shadow: 0 0 8px #3a8fff50;
+}
+
+/* Quita la flecha nativa también en Firefox */
+.reseña-form select::-ms-expand {
+  display: none;
+}
+
 
