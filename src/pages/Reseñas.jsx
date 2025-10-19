@@ -1,45 +1,102 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getReseñas, crearReseña, eliminarReseña } from "../services/reseñasService";
 import "./Reseñas.css";
 
 export default function Reseñas() {
   const [reseñas, setReseñas] = useState([]);
-  const [juego, setJuego] = useState("");
-  const [texto, setTexto] = useState("");
+  const [nuevaReseña, setNuevaReseña] = useState({
+    juego: "",
+    autor: "",
+    texto: "",
+    calificacion: 0,
+  });
 
-  const agregarReseña = () => {
-    if (!juego || !texto) return;
-    setReseñas([{ juego, texto }, ...reseñas]);
-    setJuego("");
-    setTexto("");
-  };
+  useEffect(() => {
+    cargarReseñas();
+  }, []);
+
+  async function cargarReseñas() {
+    try {
+      const data = await getReseñas();
+      setReseñas(data);
+    } catch (error) {
+      console.error("Error al cargar reseñas:", error);
+    }
+  }
+
+  async function handleAdd(e) {
+    e.preventDefault();
+    try {
+      const reseñaCreada = await crearReseña(nuevaReseña);
+      setReseñas([...reseñas, reseñaCreada]);
+      setNuevaReseña({ juego: "", autor: "", texto: "", calificacion: 0 });
+    } catch (error) {
+      console.error("Error al crear reseña:", error);
+    }
+  }
+
+  async function handleDelete(id) {
+    try {
+      await eliminarReseña(id);
+      setReseñas(reseñas.filter(r => r._id !== id));
+    } catch (error) {
+      console.error("Error al eliminar reseña:", error);
+    }
+  }
 
   return (
     <div className="reseñas-container">
-      <h1>📝 Reseñas</h1>
-      <p>Comparte tus opiniones y experiencias con otros jugadores.</p>
+      <h1>⭐ Reseñas de Juegos</h1>
 
-      <div className="reseña-form">
+      <form onSubmit={handleAdd} className="reseña-form">
         <input
           type="text"
-          placeholder="Título del juego"
-          value={juego}
-          onChange={(e) => setJuego(e.target.value)}
+          placeholder="Nombre del juego"
+          value={nuevaReseña.juego}
+          onChange={e => setNuevaReseña({ ...nuevaReseña, juego: e.target.value })}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Tu nombre"
+          value={nuevaReseña.autor}
+          onChange={e => setNuevaReseña({ ...nuevaReseña, autor: e.target.value })}
+          required
         />
         <textarea
           placeholder="Escribe tu reseña..."
-          value={texto}
-          onChange={(e) => setTexto(e.target.value)}
+          value={nuevaReseña.texto}
+          onChange={e => setNuevaReseña({ ...nuevaReseña, texto: e.target.value })}
+          required
+        ></textarea>
+        <input
+          type="number"
+          placeholder="Calificación (0-10)"
+          min="0"
+          max="10"
+          value={nuevaReseña.calificacion}
+          onChange={e => setNuevaReseña({ ...nuevaReseña, calificacion: e.target.value })}
+          required
         />
-        <button onClick={agregarReseña}>Agregar reseña</button>
-      </div>
+        <button type="submit">Agregar Reseña</button>
+      </form>
 
       <div className="reseñas-lista">
-        {reseñas.map((r, i) => (
-          <div key={i} className="reseña-card">
-            <h3>{r.juego}</h3>
-            <p>{r.texto}</p>
-          </div>
-        ))}
+        {reseñas.length === 0 ? (
+          <p className="sin-reseñas">No hay reseñas aún. ¡Sé el primero en dejar una!</p>
+        ) : (
+          reseñas.map((r) => (
+            <div key={r._id} className="reseña-card">
+              <h3>{r.juego}</h3>
+              <p className="autor">Por {r.autor}</p>
+              <p className="texto">“{r.texto}”</p>
+              <p className="calificacion">Puntuación: {r.calificacion}/10</p>
+              <button className="btn-eliminar" onClick={() => handleDelete(r._id)}>
+                Eliminar
+              </button>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

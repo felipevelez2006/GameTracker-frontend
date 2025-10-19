@@ -1,132 +1,106 @@
 import React, { useEffect, useState } from "react";
-import { obtenerJuegos, crearJuego, eliminarJuego } from "../services/juegosService";
+import { getJuegos, crearJuego, eliminarJuego } from "../services/juegosService";
 import "./BibliotecaJuegos.css";
 
-function BibliotecaJuegos() {
+export default function BibliotecaJuegos() {
   const [juegos, setJuegos] = useState([]);
   const [nuevoJuego, setNuevoJuego] = useState({
     titulo: "",
     genero: "",
     plataforma: "",
-    horasJugadas: 0,
+    horas: 0,
     completado: false,
   });
 
-  // Cargar juegos al iniciar
   useEffect(() => {
-    fetchJuegos();
+    cargarJuegos();
   }, []);
 
-  const fetchJuegos = async () => {
+  async function cargarJuegos() {
     try {
-      const res = await obtenerJuegos();
-      setJuegos(res.data);
-    } catch (err) {
-      console.error("Error al obtener juegos:", err);
+      const data = await getJuegos();
+      setJuegos(data);
+    } catch (error) {
+      console.error(error);
     }
-  };
+  }
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setNuevoJuego({
-      ...nuevoJuego,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
+  async function handleAdd(e) {
     e.preventDefault();
     try {
-      await crearJuego(nuevoJuego);
-      setNuevoJuego({
-        titulo: "",
-        genero: "",
-        plataforma: "",
-        horasJugadas: 0,
-        completado: false,
-      });
-      fetchJuegos();
-    } catch (err) {
-      console.error("Error al crear juego:", err);
+      const juegoCreado = await crearJuego(nuevoJuego);
+      setJuegos([...juegos, juegoCreado]);
+      setNuevoJuego({ titulo: "", genero: "", plataforma: "", horas: 0, completado: false });
+    } catch (error) {
+      console.error(error);
     }
-  };
+  }
 
-  const handleEliminar = async (id) => {
+  async function handleDelete(id) {
     try {
       await eliminarJuego(id);
-      fetchJuegos();
-    } catch (err) {
-      console.error("Error al eliminar juego:", err);
+      setJuegos(juegos.filter(j => j._id !== id));
+    } catch (error) {
+      console.error(error);
     }
-  };
+  }
 
   return (
     <div className="biblioteca-container">
       <h1>🎮 Mi Biblioteca de Juegos</h1>
 
-      <form className="juego-form" onSubmit={handleSubmit}>
+      <form onSubmit={handleAdd} className="formulario">
         <input
           type="text"
-          name="titulo"
           placeholder="Título del juego"
           value={nuevoJuego.titulo}
-          onChange={handleChange}
+          onChange={e => setNuevoJuego({ ...nuevoJuego, titulo: e.target.value })}
           required
         />
         <input
           type="text"
-          name="genero"
           placeholder="Género"
           value={nuevoJuego.genero}
-          onChange={handleChange}
+          onChange={e => setNuevoJuego({ ...nuevoJuego, genero: e.target.value })}
+          required
         />
         <input
           type="text"
-          name="plataforma"
           placeholder="Plataforma"
           value={nuevoJuego.plataforma}
-          onChange={handleChange}
+          onChange={e => setNuevoJuego({ ...nuevoJuego, plataforma: e.target.value })}
+          required
         />
         <input
           type="number"
-          name="horasJugadas"
           placeholder="Horas jugadas"
-          value={nuevoJuego.horasJugadas}
-          onChange={handleChange}
+          value={nuevoJuego.horas}
+          onChange={e => setNuevoJuego({ ...nuevoJuego, horas: e.target.value })}
+          min="0"
         />
         <label>
           <input
             type="checkbox"
-            name="completado"
             checked={nuevoJuego.completado}
-            onChange={handleChange}
-          />{" "}
+            onChange={e => setNuevoJuego({ ...nuevoJuego, completado: e.target.checked })}
+          />
           Completado
         </label>
-        <button type="submit">Agregar Juego</button>
+        <button type="submit" className="btn-agregar">Agregar</button>
       </form>
 
-      <div className="juegos-lista">
-        {juegos.length === 0 ? (
-          <p>No hay juegos en tu biblioteca.</p>
-        ) : (
-          juegos.map((juego) => (
-            <div key={juego._id} className="juego-card">
-              <h3>{juego.titulo}</h3>
-              <p><strong>Género:</strong> {juego.genero}</p>
-              <p><strong>Plataforma:</strong> {juego.plataforma}</p>
-              <p><strong>Horas:</strong> {juego.horasJugadas}</p>
-              <p>
-                <strong>Estado:</strong>{" "}
-                {juego.completado ? "✅ Completado" : "🕹️ En progreso"}
-              </p>
-              <button onClick={() => handleEliminar(juego._id)}>Eliminar</button>
-            </div>
-          ))
-        )}
+      <div className="lista-juegos">
+        {juegos.map(juego => (
+          <div key={juego._id} className="juego-card">
+            <h3>{juego.titulo}</h3>
+            <p>🎯 {juego.genero}</p>
+            <p>🎮 {juego.plataforma}</p>
+            <p>⏱️ {juego.horas} horas</p>
+            <p>📊 {juego.completado ? "Completado ✅" : "En progreso 🔄"}</p>
+            <button onClick={() => handleDelete(juego._id)}>Eliminar</button>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
-
-export default BibliotecaJuegos;
