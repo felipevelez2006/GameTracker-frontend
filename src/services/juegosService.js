@@ -21,3 +21,13 @@ export async function eliminarJuego(id) {
   if (!res.ok) throw new Error("Error al eliminar el juego");
   return res.json();
 }
+
+export async function actualizarJuego(id, datosActualizados) {
+  const res = await fetch(`${API_BASE_URL}/juegos/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(datosActualizados),
+  });
+  if (!res.ok) throw new Error("Error al actualizar el juego");
+  return res.json();
+}

@@ -15,6 +15,8 @@ export default function BibliotecaJuegos() {
     horasJugadas: 0,
     completado: false,
   });
+  const [editandoId, setEditandoId] = useState(null);
+  const [editandoJuego, setEditandoJuego] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -117,6 +119,33 @@ export default function BibliotecaJuegos() {
     }
   }
 
+  const handleEdit = (juego) => {
+    setEditandoId(juego._id);
+    setEditandoJuego({ ...juego });
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setEditandoJuego((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleCancelEdit = () => {
+    setEditandoId(null);
+    setEditandoJuego({});
+  };
+
+  async function handleSaveEdit(id) {
+    // Aquí iría la llamada a la API updateJuego(id, editandoJuego)
+    // Pero como aún no la tienes, haremos la simulación local:
+    setJuegos((prev) =>
+      prev.map((j) => (j._id === id ? { ...editandoJuego } : j))
+    );
+    setEditandoId(null);
+  }
+
   return (
     <div className="biblioteca-container">
       <h2>🎮 Mi Biblioteca de Juegos</h2>
@@ -129,7 +158,6 @@ export default function BibliotecaJuegos() {
             placeholder="Título del juego"
             value={nuevoJuego.nombre}
             onChange={handleChange}
-            aria-label="Título"
           />
           <input
             name="genero"
@@ -137,7 +165,6 @@ export default function BibliotecaJuegos() {
             placeholder="Género (separa con comas)"
             value={nuevoJuego.genero}
             onChange={handleChange}
-            aria-label="Género"
           />
           <input
             name="plataforma"
@@ -145,7 +172,6 @@ export default function BibliotecaJuegos() {
             placeholder="Plataforma (PC, PS5, Switch)"
             value={nuevoJuego.plataforma}
             onChange={handleChange}
-            aria-label="Plataforma"
           />
           <input
             name="horasJugadas"
@@ -153,11 +179,8 @@ export default function BibliotecaJuegos() {
             placeholder="Horas jugadas"
             value={nuevoJuego.horasJugadas}
             onChange={handleChange}
-            aria-label="Horas jugadas"
-            min="0"
-            style={{ maxWidth: 120 }}
           />
-          <label style={{ alignSelf: "center" }}>
+          <label>
             <input
               name="completado"
               type="checkbox"
@@ -170,34 +193,72 @@ export default function BibliotecaJuegos() {
         </form>
       </section>
 
-      {loading ? <p style={{ color: "#cfe3ff" }}>Cargando juegos...</p> : null}
-      {error ? <p style={{ color: "#ffb4b4" }}>{error}</p> : null}
-
-      <section className="biblioteca-lista" aria-live="polite">
-        {juegos.length === 0 && !loading ? (
-          <p className="sin-juegos">Aún no tienes juegos en tu biblioteca.</p>
-        ) : (
-          juegos.map((j) => (
-            <article key={j._id} className="juego-card">
-              <h3>{j.nombre}</h3>
-              <p><strong>Género:</strong> {j.genero || "—"}</p>
-              <p><strong>Plataforma:</strong> {j.plataforma || "—"}</p>
-              <p><strong>Horas jugadas:</strong> {j.horasJugadas}</p>
-              <p>
-                <strong>Estado:</strong>{" "}
-                {j.completado ? "✅ Completado" : "🕹️ En progreso"}
-              </p>
-
-              <button
-                className="btn-eliminar"
-                onClick={() => handleDelete(j._id)}
-                aria-label={`Eliminar ${j.nombre}`}
-              >
-                Eliminar
-              </button>
-            </article>
-          ))
-        )}
+      <section className="biblioteca-lista">
+        {juegos.map((j) => (
+          <article key={j._id} className="juego-card">
+            {editandoId === j._id ? (
+              <div className="edit-mode">
+                <input
+                  name="nombre"
+                  type="text"
+                  value={editandoJuego.nombre}
+                  onChange={handleEditChange}
+                />
+                <input
+                  name="genero"
+                  type="text"
+                  value={editandoJuego.genero}
+                  onChange={handleEditChange}
+                />
+                <input
+                  name="plataforma"
+                  type="text"
+                  value={editandoJuego.plataforma}
+                  onChange={handleEditChange}
+                />
+                <input
+                  name="horasJugadas"
+                  type="number"
+                  value={editandoJuego.horasJugadas}
+                  onChange={handleEditChange}
+                />
+                <label>
+                  <input
+                    name="completado"
+                    type="checkbox"
+                    checked={editandoJuego.completado}
+                    onChange={handleEditChange}
+                  />{" "}
+                  Completado
+                </label>
+                <div className="edit-buttons">
+                  <button onClick={() => handleSaveEdit(j._id)}>💾 Guardar</button>
+                  <button onClick={handleCancelEdit}>❌ Cancelar</button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <h3>{j.nombre}</h3>
+                <p><strong>Género:</strong> {j.genero}</p>
+                <p><strong>Plataforma:</strong> {j.plataforma}</p>
+                <p><strong>Horas jugadas:</strong> {j.horasJugadas}</p>
+                <p>
+                  <strong>Estado:</strong>{" "}
+                  {j.completado ? "✅ Completado" : "🕹️ En progreso"}
+                </p>
+                <div className="card-buttons">
+                  <button onClick={() => handleEdit(j)}>Editar</button>
+                  <button
+                    className="btn-eliminar"
+                    onClick={() => handleDelete(j._id)}
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </>
+            )}
+          </article>
+        ))}
       </section>
     </div>
   );
