@@ -50,14 +50,6 @@ export default function Navbar() {
             ))}
           </ul>
 
-          <div className="nav-actions">
-            <button className="btn btn-outline" onClick={close} aria-label="Ir a Biblioteca">
-              📚 Biblioteca
-            </button>
-            <button className="btn btn-solid" onClick={close} aria-label="Ver estadísticas">
-              📈 Estadísticas
-            </button>
-          </div>
         </nav>
       </div>
     </header>

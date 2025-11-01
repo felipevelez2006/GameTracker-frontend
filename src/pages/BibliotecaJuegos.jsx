@@ -8,6 +8,12 @@ import "./BibliotecaJuegos.css";
 
 export default function BibliotecaJuegos() {
   const [juegos, setJuegos] = useState([]);
+  const [filtros, setFiltros] = useState({
+    genero: "Todos",
+    plataforma: "Todos",
+    completado: "Todos",
+  });
+
   const [nuevoJuego, setNuevoJuego] = useState({
     nombre: "",
     genero: "",
@@ -15,6 +21,7 @@ export default function BibliotecaJuegos() {
     horasJugadas: 0,
     completado: false,
   });
+
   const [editandoId, setEditandoId] = useState(null);
   const [editandoJuego, setEditandoJuego] = useState({});
   const [loading, setLoading] = useState(false);
@@ -51,6 +58,24 @@ export default function BibliotecaJuegos() {
       setLoading(false);
     }
   }
+
+  // ------- FILTRADO DINÁMICO -------
+  const generosUnicos = ["Todos", ...new Set(juegos.flatMap(j => j.genero.split(",").map(s => s.trim())))];
+  const plataformasUnicas = ["Todos", ...new Set(juegos.flatMap(j => j.plataforma.split(",").map(s => s.trim())))];
+
+  const juegosFiltrados = juegos.filter(j => {
+    return (
+      (filtros.genero === "Todos" || j.genero.includes(filtros.genero)) &&
+      (filtros.plataforma === "Todos" || j.plataforma.includes(filtros.plataforma)) &&
+      (filtros.completado === "Todos" ||
+        (filtros.completado === "Completados" && j.completado) ||
+        (filtros.completado === "En progreso" && !j.completado))
+    );
+  });
+
+  const handleFiltroChange = (e) => {
+    setFiltros({ ...filtros, [e.target.name]: e.target.value });
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -138,8 +163,6 @@ export default function BibliotecaJuegos() {
   };
 
   async function handleSaveEdit(id) {
-    // Aquí iría la llamada a la API updateJuego(id, editandoJuego)
-    // Pero como aún no la tienes, haremos la simulación local:
     setJuegos((prev) =>
       prev.map((j) => (j._id === id ? { ...editandoJuego } : j))
     );
@@ -150,86 +173,49 @@ export default function BibliotecaJuegos() {
     <div className="biblioteca-container">
       <h2>🎮 Mi Biblioteca de Juegos</h2>
 
-      <section className="biblioteca-form" aria-labelledby="add-game">
+      {/* ---- BARRA DE FILTROS ---- */}
+      <div className="filtros-container">
+        <select name="genero" value={filtros.genero} onChange={handleFiltroChange}>
+          {generosUnicos.map(g => <option key={g}>{g}</option>)}
+        </select>
+
+        <select name="plataforma" value={filtros.plataforma} onChange={handleFiltroChange}>
+          {plataformasUnicas.map(p => <option key={p}>{p}</option>)}
+        </select>
+
+        <select name="completado" value={filtros.completado} onChange={handleFiltroChange}>
+          <option>Todos</option>
+          <option>Completados</option>
+          <option>En progreso</option>
+        </select>
+      </div>
+
+      {/* ---- FORMULARIO DE AGREGAR ---- */}
+      <section className="biblioteca-form">
         <form onSubmit={handleSubmit} style={{ display: "contents" }}>
-          <input
-            name="nombre"
-            type="text"
-            placeholder="Título del juego"
-            value={nuevoJuego.nombre}
-            onChange={handleChange}
-          />
-          <input
-            name="genero"
-            type="text"
-            placeholder="Género (separa con comas)"
-            value={nuevoJuego.genero}
-            onChange={handleChange}
-          />
-          <input
-            name="plataforma"
-            type="text"
-            placeholder="Plataforma (PC, PS5, Switch)"
-            value={nuevoJuego.plataforma}
-            onChange={handleChange}
-          />
-          <input
-            name="horasJugadas"
-            type="number"
-            placeholder="Horas jugadas"
-            value={nuevoJuego.horasJugadas}
-            onChange={handleChange}
-          />
+          <input name="nombre" type="text" placeholder="Título del juego" value={nuevoJuego.nombre} onChange={handleChange} />
+          <input name="genero" type="text" placeholder="Género (separa con comas)" value={nuevoJuego.genero} onChange={handleChange} />
+          <input name="plataforma" type="text" placeholder="Plataforma" value={nuevoJuego.plataforma} onChange={handleChange} />
+          <input name="horasJugadas" type="number" placeholder="Horas jugadas" value={nuevoJuego.horasJugadas} onChange={handleChange} />
           <label>
-            <input
-              name="completado"
-              type="checkbox"
-              checked={nuevoJuego.completado}
-              onChange={handleChange}
-            />{" "}
-            Completado
+            <input name="completado" type="checkbox" checked={nuevoJuego.completado} onChange={handleChange} /> Completado
           </label>
           <button type="submit">Agregar</button>
         </form>
       </section>
 
+      {/* ---- LISTA FILTRADA ---- */}
       <section className="biblioteca-lista">
-        {juegos.map((j) => (
+        {juegosFiltrados.map((j) => (
           <article key={j._id} className="juego-card">
             {editandoId === j._id ? (
               <div className="edit-mode">
-                <input
-                  name="nombre"
-                  type="text"
-                  value={editandoJuego.nombre}
-                  onChange={handleEditChange}
-                />
-                <input
-                  name="genero"
-                  type="text"
-                  value={editandoJuego.genero}
-                  onChange={handleEditChange}
-                />
-                <input
-                  name="plataforma"
-                  type="text"
-                  value={editandoJuego.plataforma}
-                  onChange={handleEditChange}
-                />
-                <input
-                  name="horasJugadas"
-                  type="number"
-                  value={editandoJuego.horasJugadas}
-                  onChange={handleEditChange}
-                />
+                <input name="nombre" type="text" value={editandoJuego.nombre} onChange={handleEditChange} />
+                <input name="genero" type="text" value={editandoJuego.genero} onChange={handleEditChange} />
+                <input name="plataforma" type="text" value={editandoJuego.plataforma} onChange={handleEditChange} />
+                <input name="horasJugadas" type="number" value={editandoJuego.horasJugadas} onChange={handleEditChange} />
                 <label>
-                  <input
-                    name="completado"
-                    type="checkbox"
-                    checked={editandoJuego.completado}
-                    onChange={handleEditChange}
-                  />{" "}
-                  Completado
+                  <input name="completado" type="checkbox" checked={editandoJuego.completado} onChange={handleEditChange} /> Completado
                 </label>
                 <div className="edit-buttons">
                   <button onClick={() => handleSaveEdit(j._id)}>💾 Guardar</button>
@@ -242,18 +228,11 @@ export default function BibliotecaJuegos() {
                 <p><strong>Género:</strong> {j.genero}</p>
                 <p><strong>Plataforma:</strong> {j.plataforma}</p>
                 <p><strong>Horas jugadas:</strong> {j.horasJugadas}</p>
-                <p>
-                  <strong>Estado:</strong>{" "}
-                  {j.completado ? "✅ Completado" : "🕹️ En progreso"}
-                </p>
+                <p><strong>Estado:</strong> {j.completado ? "✅ Completado" : "🕹️ En progreso"}</p>
+
                 <div className="card-buttons">
                   <button onClick={() => handleEdit(j)}>Editar</button>
-                  <button
-                    className="btn-eliminar"
-                    onClick={() => handleDelete(j._id)}
-                  >
-                    Eliminar
-                  </button>
+                  <button className="btn-eliminar" onClick={() => handleDelete(j._id)}>Eliminar</button>
                 </div>
               </>
             )}
